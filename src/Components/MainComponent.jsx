@@ -15,7 +15,7 @@ const MainComponent = () => {
           <Route exact path='/' component={Landing} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
-          <Route exact path='/orders' component={OrdersTable} />
+          <Route path='/orders' component={OrdersTable} />
         </div>
       </div>
     </Router>
