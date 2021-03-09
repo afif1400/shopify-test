@@ -1,0 +1,84 @@
+.MuiTableContainer-root {
+  max-width: 1000px;
+  margin: 0 auto !important;
+}
+
+.statuspaid {
+  padding: 7px 14px;
+  width: 60px;
+  border-radius: 12px;
+  border: 2px solid green;
+  background-color: #79fa59;
+}
+
+.statuspending {
+  padding: 7px 14px;
+  width: 60px;
+  border-radius: 12px;
+  border: 2px solid orange;
+  background-color: rgb(235, 181, 82);
+}
+
+.statusrefunded {
+  padding: 7px 14px;
+  width: 60px;
+  border-radius: 12px;
+  border: 2px solid blue;
+  background-color: rgb(130, 130, 228);
+}
+.statuspartially_paid {
+  padding: 7px 14px;
+  width: 60px;
+  border-radius: 12px;
+  border: 2px solid blue;
+  background-color: rgb(130, 130, 228);
+}
+
+.product_card {
+  padding: 20px;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-between;
+}
+.product_title {
+  font-size: 16px;
+  color: dodgerblue;
+}
+.product_sku {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+}
+.product_card .box-2 {
+  position: relative;
+  padding: 7px 14px;
+}
+.product_card .box-2 .price {
+  font-size: 15px;
+}
+.product_card .box-2 .quantity {
+  font-size: 15px;
+}
+.product_card .box-3 {
+  position: relative;
+  padding: 7px 14px;
+}
+
+.product_card .box-3 .total_amount {
+  font-size: 15px;
+}
+
+.create_order_button {
+  border-radius: 3px;
+  letter-spacing: 1.5px;
+  margin: 1rem;
+  background: #fcac23 !important;
+  float: right;
+  font-weight: 500;
+}
+.preloader_spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
