@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
 import './orders.css';
 
@@ -28,6 +29,28 @@ const useRowStyles = makeStyles({
 const Row = ({ row }) => {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
+  const [selectedProductArray, setSelectedProductArray] = React.useState([]);
+
+  const handleSelectedProducts = (e, value) => {
+    console.log('selectedExpertArr');
+    let clonedExpertArr = [...selectedProductArray];
+    if (selectedProductArray.indexOf(value) === -1) {
+      clonedExpertArr.push(value);
+      setSelectedProductArray(clonedExpertArr);
+    } else {
+      clonedExpertArr = [...selectedProductArray];
+      let removeIndex = selectedProductArray.indexOf(value);
+      clonedExpertArr.splice(removeIndex, 1);
+      setSelectedProductArray(clonedExpertArr);
+    }
+  };
+
+  //function to create new orders
+  //logic:products along with the order number are captured in an
+  //-array which is used to send the data to the shopify api and
+  //-modify changes
+  // const createOrder = () => {};
+
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -63,6 +86,20 @@ const Row = ({ row }) => {
               {row.line_items.map((items) => {
                 return (
                   <div className='product_card'>
+                    <Checkbox
+                      checked={
+                        selectedProductArray.indexOf(items.id) > -1
+                          ? true
+                          : false
+                      }
+                      name='expertCheckbox'
+                      onClick={(e) => {
+                        handleSelectedProducts(e, items.id);
+                      }}
+                      value={items.id}
+                      color='primary'
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />
                     <div className='box-1'>
                       <span className='product_title'>{items.name}</span>
                       <br />
@@ -122,85 +159,94 @@ export default function OrdersTable() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
+    <div className='container' style={{ maxWidth: '900px' }}>
       <button
         type='submit'
         className='btn btn-medium waves-effect waves-light hoverable accent-3 create_order_button'
       >
         <span>+</span> create order
       </button>
-      <Table aria-label='collapsible table'>
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Order Number</TableCell>
-            <TableCell align='left'>Created At</TableCell>
-            <TableCell align='left'>Gateway</TableCell>
-            <TableCell align='left'>Status</TableCell>
-            <TableCell align='left'>Sub Total</TableCell>
-            <TableCell align='left'>Total</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders ? (
-            orders.map((order) => {
-              return <Row key={order.order_number} row={order} />;
-            })
-          ) : (
-            <div className='preloader_spinner'>
-              <div class='preloader-wrapper big active'>
-                <div class='spinner-layer spinner-blue'>
-                  <div class='circle-clipper left'>
-                    <div class='circle'></div>
+      <TableContainer component={Paper}>
+        <Table aria-label='collapsible table'>
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>Order Number</TableCell>
+              <TableCell align='left'>Created At</TableCell>
+              <TableCell align='left'>Gateway</TableCell>
+              <TableCell align='left'>Status</TableCell>
+              <TableCell align='left'>Sub Total</TableCell>
+              <TableCell align='left'>Total</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {orders ? (
+              orders.map((order) => {
+                return <Row key={order.order_number} row={order} />;
+              })
+            ) : (
+              <div
+                style={{
+                  margin: '50px',
+                }}
+              >
+                <div
+                  class='preloader-wrapper big active'
+                  style={{ justifyContent: 'center' }}
+                >
+                  <div class='spinner-layer spinner-blue'>
+                    <div class='circle-clipper left'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='gap-patch'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='circle-clipper right'>
+                      <div class='circle'></div>
+                    </div>
                   </div>
-                  <div class='gap-patch'>
-                    <div class='circle'></div>
-                  </div>
-                  <div class='circle-clipper right'>
-                    <div class='circle'></div>
-                  </div>
-                </div>
 
-                <div class='spinner-layer spinner-red'>
-                  <div class='circle-clipper left'>
-                    <div class='circle'></div>
+                  <div class='spinner-layer spinner-red'>
+                    <div class='circle-clipper left'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='gap-patch'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='circle-clipper right'>
+                      <div class='circle'></div>
+                    </div>
                   </div>
-                  <div class='gap-patch'>
-                    <div class='circle'></div>
-                  </div>
-                  <div class='circle-clipper right'>
-                    <div class='circle'></div>
-                  </div>
-                </div>
 
-                <div class='spinner-layer spinner-yellow'>
-                  <div class='circle-clipper left'>
-                    <div class='circle'></div>
+                  <div class='spinner-layer spinner-yellow'>
+                    <div class='circle-clipper left'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='gap-patch'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='circle-clipper right'>
+                      <div class='circle'></div>
+                    </div>
                   </div>
-                  <div class='gap-patch'>
-                    <div class='circle'></div>
-                  </div>
-                  <div class='circle-clipper right'>
-                    <div class='circle'></div>
-                  </div>
-                </div>
 
-                <div class='spinner-layer spinner-green'>
-                  <div class='circle-clipper left'>
-                    <div class='circle'></div>
-                  </div>
-                  <div class='gap-patch'>
-                    <div class='circle'></div>
-                  </div>
-                  <div class='circle-clipper right'>
-                    <div class='circle'></div>
+                  <div class='spinner-layer spinner-green'>
+                    <div class='circle-clipper left'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='gap-patch'>
+                      <div class='circle'></div>
+                    </div>
+                    <div class='circle-clipper right'>
+                      <div class='circle'></div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }

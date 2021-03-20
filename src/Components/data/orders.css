@@ -5,9 +5,8 @@
 
 .statuspaid {
   padding: 7px 14px;
-  width: 60px;
+  width: 60px !important;
   border-radius: 12px;
-  border: 2px solid green;
   background-color: #79fa59;
 }
 
@@ -15,7 +14,6 @@
   padding: 7px 14px;
   width: 60px;
   border-radius: 12px;
-  border: 2px solid orange;
   background-color: rgb(235, 181, 82);
 }
 
@@ -23,14 +21,12 @@
   padding: 7px 14px;
   width: 60px;
   border-radius: 12px;
-  border: 2px solid blue;
   background-color: rgb(130, 130, 228);
 }
 .statuspartially_paid {
   padding: 7px 14px;
   width: 60px;
   border-radius: 12px;
-  border: 2px solid blue;
   background-color: rgb(130, 130, 228);
 }
 
