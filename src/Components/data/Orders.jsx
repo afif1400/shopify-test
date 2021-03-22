@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import OrdersContext from '../../Context/orders/OrdersContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -24,15 +24,21 @@ const useRowStyles = makeStyles({
     },
   },
 });
-
+let OrderProduct = {};
 const Row = ({ row }) => {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
   const [selectedProductArray, setSelectedProductArray] = React.useState([]);
 
-  const handleSelectedProducts = (e, value) => {
+  const handleSelectedProducts = (e, value, orderNumber) => {
     console.log('selectedExpertArr');
     let clonedExpertArr = [...selectedProductArray];
+    const productsExisting = OrderProduct[orderNumber];
+    if (productsExisting) {
+      OrderProduct[orderNumber] = [...productsExisting, value];
+    } else {
+      OrderProduct[orderNumber] = [value];
+    }
     if (selectedProductArray.indexOf(value) === -1) {
       clonedExpertArr.push(value);
       setSelectedProductArray(clonedExpertArr);
@@ -42,13 +48,14 @@ const Row = ({ row }) => {
       clonedExpertArr.splice(removeIndex, 1);
       setSelectedProductArray(clonedExpertArr);
     }
+    console.log(OrderProduct);
   };
 
   //function to create new orders
   //logic:products along with the order number are captured in an
   //-array which is used to send the data to the shopify api and
   //-modify changes
-  // const createOrder = () => {};
+  const createOrder = () => {};
 
   return (
     <React.Fragment>
@@ -93,7 +100,7 @@ const Row = ({ row }) => {
                       }
                       name='expertCheckbox'
                       onClick={(e) => {
-                        handleSelectedProducts(e, items.id);
+                        handleSelectedProducts(e, items.id, row.order_number);
                       }}
                       value={items.id}
                       color='primary'
@@ -128,12 +135,15 @@ const Row = ({ row }) => {
 };
 
 const OrdersTable = () => {
-  const [orders, setOrders] = useState([]);
   const OrdersContextState = useContext(OrdersContext);
 
   useEffect(() => {
     OrdersContextState.getOrders();
-  }, []);
+  }, [OrdersContextState]);
+
+  const createOrder = () => {
+    OrdersContextState.createOrder();
+  };
 
   return (
     <div className='container' style={{ maxWidth: '900px' }}>
