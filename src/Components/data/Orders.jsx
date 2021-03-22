@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useContext } from 'react';
+import OrdersContext from '../../Context/orders/OrdersContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -15,7 +15,6 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Checkbox from '@material-ui/core/Checkbox';
-import axios from 'axios';
 import './orders.css';
 
 const useRowStyles = makeStyles({
@@ -128,34 +127,12 @@ const Row = ({ row }) => {
   );
 };
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
-export default function OrdersTable() {
+const OrdersTable = () => {
   const [orders, setOrders] = useState([]);
-
-  const fetchOrders = async () => {
-    const response = await axios.get('http://localhost:7000/orderlist');
-    setOrders(response.data.orders);
-  };
+  const OrdersContextState = useContext(OrdersContext);
 
   useEffect(() => {
-    fetchOrders();
+    OrdersContextState.getOrders();
   }, []);
 
   return (
@@ -171,17 +148,27 @@ export default function OrdersTable() {
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell>Order Number</TableCell>
-              <TableCell align='left'>Created At</TableCell>
-              <TableCell align='left'>Gateway</TableCell>
-              <TableCell align='left'>Status</TableCell>
-              <TableCell align='left'>Sub Total</TableCell>
-              <TableCell align='left'>Total</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }}>Order Number</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }} align='left'>
+                Created At
+              </TableCell>
+              <TableCell style={{ fontWeight: 'bold' }} align='left'>
+                Payment Gateway
+              </TableCell>
+              <TableCell style={{ fontWeight: 'bold' }} align='left'>
+                Status
+              </TableCell>
+              <TableCell style={{ fontWeight: 'bold' }} align='left'>
+                Sub Total
+              </TableCell>
+              <TableCell style={{ fontWeight: 'bold' }} align='left'>
+                Total
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders ? (
-              orders.map((order) => {
+            {OrdersContextState.orders ? (
+              OrdersContextState.orders.map((order) => {
                 return <Row key={order.order_number} row={order} />;
               })
             ) : (
@@ -249,4 +236,6 @@ export default function OrdersTable() {
       </TableContainer>
     </div>
   );
-}
+};
+
+export default OrdersTable;

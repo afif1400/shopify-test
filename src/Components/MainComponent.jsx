@@ -9,14 +9,12 @@ import OrdersTable from './data/Orders';
 const MainComponent = () => {
   return (
     <Router>
-      <div className='App'>
-        <Navbar />
-        <div style={{ paddingTop: '20px' }}>
-          <Route exact path='/' component={Landing} />
-          <Route exact path='/register' component={Register} />
-          <Route exact path='/login' component={Login} />
-          <Route path='/orders' component={OrdersTable} />
-        </div>
+      <Navbar />
+      <div style={{ paddingTop: '20px' }}>
+        <Route exact path='/' component={Landing} />
+        <Route exact path='/register' component={Register} />
+        <Route exact path='/login' component={Login} />
+        <Route path='/orders' component={OrdersTable} />
       </div>
     </Router>
   );
